@@ -19,8 +19,7 @@ public class UserController {
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping(path="/add") // Map ONLY POST Requests
-    public @ResponseBody String addNewUser (@RequestParam String name
-            , @RequestParam String email) {
+    public @ResponseBody String addNewUser (@RequestParam String name, @RequestParam String email) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
@@ -28,6 +27,16 @@ public class UserController {
             logger.debug("Creating user {} with email {}.", name, email);
             userService.addUser(name, email);
             return "Saved";
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+    @PutMapping(path="/{id}")
+    public @ResponseBody String updateUser(@PathVariable String id, @RequestParam String name, @RequestParam String email) {
+        try {
+            logger.debug("Updating user with id {}.", id);
+            userService.updateUser(id, name, email);
+            return "Updated";
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
